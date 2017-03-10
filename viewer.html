@@ -4,12 +4,30 @@
 	<meta charset="UTF-8">
 	<title>Title of the document</title>
 
-    <link rel="stylesheet" href="assets/skeleton.css">
+    <link rel="stylesheet" href="assets/jquery-ui.css">
 	<link rel="stylesheet" href="assets/owl.carousel.min.css">
 	<link rel="stylesheet" href="assets/owl.theme.default.min.css">
-	
+
 	<script src="assets/jquery.min.js"></script>
+	<script src="assets/jquery-ui.min.js"></script>
     <script src="assets/owl.carousel.min.js"></script>
+
+    <script>
+    	$(function() {
+    		$("#datepicker").datepicker({minDate: (new Date(2016, 1, 24)), maxDate: (new Date(Date.now()))});
+    		//$("#datepicker").datepicker({minDate: (new Date(2016, 1, 24)), maxDate: (new Date(2016, 11, 20))});
+    	});
+    </script>
+
+    <style type="text/css">
+    	.item {
+    		background-color: #ecf0f1;
+    	}
+    	.item > p {
+    		text-align: center;
+    		margin: auto;
+    	}
+    </style>
 
 </head>
 
@@ -17,40 +35,129 @@
 
 	<div class="container">
 	
-		<h1>GSA Search Status Viewer</h1>
+		<h1>GSA Graph Viewer</h1>
 		<hr />
-		
-		<div class="owl-carousel owl-theme">
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
-			<div class="item"><img src="images/search.jpg" /></div>
+
+		<div id="notifications"></div>
+
+		<div id="selectDate">
+			<p>Please select a start date for the graph!</p>
+			<form id="dateForm" method="post">
+				Date: <input type="text" id="datepicker">
+				<input type="submit" name="">
+			</form>
 		</div>
+
+
+		<hr />
+		<div>
+			<h2>Queries per Minute <button id="button1" type="button">&#128274; Sync Others</button></h2>
+			<div id="queriesperminute" class="owl-carousel owl-theme"></div>
+		</div>
+
+		<hr />
+		<h2>Average Search Latency <button id="button2" type="button">&#128274; Sync Others</button></h2>
+		<div id="averagesearchlatency" class="owl-carousel owl-theme"></div>
+
+		<hr />
+		<h2>Sum URLs Crawled <button id="button3" type="button">&#128274; Sync Others</button></h2>
+		<div id="sumurlscrawled" class="owl-carousel owl-theme"></div>
+
+		<hr />
+		<h2>Sum URLs Available <button id="button4" type="button">&#128274; Sync Others</button></h2>
+		<div id="sumurlsavailable" class="owl-carousel owl-theme"></div>
 			
 	</div>
-		  
-		<script>
-            $(document).ready(function() {
+
+
+	<script>
+		$("#dateForm").submit(function(event){
+			var selectedDate = $("#datepicker").datepicker('getDate');
+			var now = new Date(Date.now());
+			//var now = new Date(2016, 11, 20);
+			console.log(selectedDate);
+			$("#notifications").append("<p><strong>Start Date:</strong> " + selectedDate + "<br><strong>End Date:</strong> " + now + "</p>");
+			$("#selectDate").remove();
+			for (var d = selectedDate; d <= now; d.setDate(d.getDate() + 1)) {
+				var mm = ((d.getMonth() + 1) >= 10) ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1);
+				var dd = ((d.getDate()) >= 10) ? (d.getDate()) : '0' + (d.getDate());
+				var yyyy = d.getFullYear();
+				var date = yyyy.toString() + mm.toString() + dd.toString();
+				var tdate = dd + "/" + mm + "/" + yyyy;
+				$("#queriesperminute").prepend("<div class='item'><img src='graphs/queriesperminutegraph-"+ date + ".png' alt='" + date + "' /><p><strong>" + tdate + "</strong></p></div>");
+
+				$("#averagesearchlatency").prepend("<div class='item'><img src='graphs/gws_avg_search_latency_graph-"+ date + ".png' alt='" + date + "' /><p><strong>" + tdate + "</strong></p></div>");
+
+				$("#sumurlscrawled").prepend("<div class='item'><img src='graphs/sumurlscrawledgraph-"+ date + ".png' alt='" + date + "' /><p><strong>" + tdate + "</strong></p></div>");
+
+				$("#sumurlsavailable").prepend("<div class='item'><img src='graphs/sumurlsavailablegraph-"+ date + ".png' alt='" + date + "' /><p><strong>" + tdate + "</strong></p></div>");
+
+			}
+			$(function() {
 				var owl = $('.owl-carousel');
-				owl.owlCarousel({
-				nav: true,
-                items: 3,
-                loop: false,
-                margin: 10,
-              });
-            })
-			
-			
-			
-          </script>
+				owl.owlCarousel ({
+					rtl:true,
+					nav: true,
+	                items: 4,
+	                loop: false,
+	                margin: 10,
+            	});
+			});
+			event.preventDefault();
+		});
+
+		$('#button1').click(function() {
+			var index = $('#queriesperminute div.active').index();
+			var owl1 = $('#queriesperminute');
+			var owl2 = $('#averagesearchlatency');
+			var owl3 = $('#sumurlscrawled');
+			var owl4 = $('#sumurlsavailable');
+
+			owl2.trigger('to.owl.carousel', [index,300,true]);
+			owl3.trigger('to.owl.carousel', [index,300,true]);
+			owl4.trigger('to.owl.carousel', [index,300,true]);
+		});
+
+		$('#button2').click(function() {
+			var index = $('#averagesearchlatency div.active').index();
+			var owl1 = $('#queriesperminute');
+			var owl2 = $('#averagesearchlatency');
+			var owl3 = $('#sumurlscrawled');
+			var owl4 = $('#sumurlsavailable');
+
+			owl1.trigger('to.owl.carousel', [index,300,true]);
+			owl3.trigger('to.owl.carousel', [index,300,true]);
+			owl4.trigger('to.owl.carousel', [index,300,true]);
+		});
+
+		$('#button3').click(function() {
+			var index = $('#sumurlscrawled div.active').index();
+			var owl1 = $('#queriesperminute');
+			var owl2 = $('#averagesearchlatency');
+			var owl3 = $('#sumurlscrawled');
+			var owl4 = $('#sumurlsavailable');
+
+			owl1.trigger('to.owl.carousel', [index,300,true]);
+			owl2.trigger('to.owl.carousel', [index,300,true]);
+			owl4.trigger('to.owl.carousel', [index,300,true]);
+		});
+
+		$('#button4').click(function() {
+			var index = $('#sumurlsavailable div.active').index();
+			var owl1 = $('#queriesperminute');
+			var owl2 = $('#averagesearchlatency');
+			var owl3 = $('#sumurlscrawled');
+			var owl4 = $('#sumurlsavailable');
+
+			owl1.trigger('to.owl.carousel', [index,300,true]);
+			owl2.trigger('to.owl.carousel', [index,300,true]);
+			owl3.trigger('to.owl.carousel', [index,300,true]);
+		});
+
+
+
+
+	</script>
 		  
 </body>
 

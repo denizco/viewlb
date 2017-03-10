@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GSA performance View - History</title>
+</head>
+<body>
+ <script type="text/javascript">
+ window.onload = function() {
+  var input = document.getElementById("focusHere").focus();
+ }
+ </script>
+ <table>
+ <tr bgcolor="#eeeeee"><td align="right"><h1>These graphs show the global summary of recent queries per minute.</h1><input id="focusHere" type="text" autofocus></td></tr>
+  <tr bgcolor="#eeeeee">
+   <td style="display: flex"><script type="text/javascript">
+     now = new Date(Date.now());
+     start = new Date(2016, 2, 24); // customize the date of the first downloaded image (2016, 2, 22) = 2016 March 22th
+				for (var d = start; d <= now; d.setDate(d.getDate() + 1)) {
+					var mm = ((d.getMonth() + 1) >= 10) ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1);
+					var dd = ((d.getDate()) >= 10) ? (d.getDate()) : '0' + (d.getDate());
+					var yyyy = d.getFullYear();
+					var date = yyyy.toString() + mm.toString() + dd.toString();
+					var tdate = yyyy + "/" + mm + "/" + dd;
+					document.write('<img src="queriesperminutegraph-'+date+'.png"  alt="'+date+'"  title="'+tdate+'" />');
+				}
+			</script></td>
+  </tr>
+ <tr ><td align="right"><h1>These graphs show the global summary of recent search latency.</h1> </td></tr>
+  <tr>
+   <td style="display: flex"><script type="text/javascript">
+     now = new Date(Date.now());
+     start = new Date(2016, 2, 24); // customize the date of the first downloaded image (2016, 2, 22) = 2016 March 22th
+				for (var d = start; d <= now; d.setDate(d.getDate() + 1)) {
+					var mm = ((d.getMonth() + 1) >= 10) ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1);
+					var dd = ((d.getDate()) >= 10) ? (d.getDate()) : '0' + (d.getDate());
+					var yyyy = d.getFullYear();
+					var date = yyyy.toString() + mm.toString() + dd.toString();
+					var tdate = yyyy + "/" + mm + "/" + dd;
+					document.write('<img src="gws_avg_search_latency_graph-'+date+'.png"   alt="'+date+'"  title="'+tdate+'" />');
+				}
+			</script></td>
+  </tr>
+ <tr bgcolor="#eeeeee"><td align="right"><h1>Graphs of Crawled URLs </h1></td></tr>
+  <tr bgcolor="#eeeeee">
+   <td style="display: flex"><script type="text/javascript">
+     now = new Date(Date.now());
+     start = new Date(2016, 2, 24); // customize the date of the first downloaded image (2016, 2, 22) = 2016 March 22th
+				for (var d = start; d <= now; d.setDate(d.getDate() + 1)) {
+					var mm = ((d.getMonth() + 1) >= 10) ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1);
+					var dd = ((d.getDate()) >= 10) ? (d.getDate()) : '0' + (d.getDate());
+					var yyyy = d.getFullYear();
+					var date = yyyy.toString() + mm.toString() + dd.toString();
+					var tdate = yyyy + "/" + mm + "/" + dd;
+					document.write('<img src="sumurlscrawledgraph-'+date+'.png"  alt="'+date+'"  title="'+tdate+'" />');
+				}
+			</script></td>
+  </tr>
+ <tr><td align="right"><h1>Graphs of Found URLs </h1></td></tr>
+  <tr>
+   <td style="display: flex"><script type="text/javascript">
+     now = new Date(Date.now());
+     start = new Date(2016, 2, 24); // customize the date of the first downloaded image (2016, 2, 22) = 2016 March 22th
+				for (var d = start; d <= now; d.setDate(d.getDate() + 1)) {
+					var mm = ((d.getMonth() + 1) >= 10) ? (d.getMonth() + 1) : '0' + (d.getMonth() + 1);
+					var dd = ((d.getDate()) >= 10) ? (d.getDate()) : '0' + (d.getDate());
+					var yyyy = d.getFullYear();
+					var date = yyyy.toString() + mm.toString() + dd.toString();
+					var tdate = yyyy + "/" + mm + "/" + dd;
+					document.write('<img src="sumurlsavailablegraph-'+date+'.png"  alt="'+date+'"  title="'+tdate+'" />');
+				}
+			</script></td>
+  </tr>
+ </table>
+
+</body>
+</html>
+
+
